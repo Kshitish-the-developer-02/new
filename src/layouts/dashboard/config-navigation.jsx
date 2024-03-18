@@ -1,4 +1,5 @@
 import SvgColor from 'src/components/svg-color';
+// import { IoIosLogIn } from "react-icons/io";
 
 // ----------------------------------------------------------------------
 
@@ -9,7 +10,7 @@ const icon = (name) => (
 const navConfig = [
   {
     title: 'dashboard',
-    path: '/',
+    path: '/dashboard',
     icon: icon('ic_analytics'),
   },
   {
@@ -36,6 +37,11 @@ const navConfig = [
     title: 'Not found',
     path: '/404',
     icon: icon('ic_disabled'),
+  },
+  {
+    title: 'login',
+    path: '/404',
+    icon: icon('IoIosLogIn'),
   },
 ];
 

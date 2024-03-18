@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState } from 'react';
 
 import Box from '@mui/material/Box';
@@ -29,19 +30,36 @@ export default function LoginView() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick = () => {
-    router.push('/dashboard');
+  const[email, setEmail] = useState("")
+  const[password, setPassword] = useState("")
+
+  const[isWrong, setIsWrong] = useState(false)
+
+  const handleClick = async () => {
+    try {
+      const response = await axios.post("http://localhost:5000/api/users/auth", {email, password})
+      if(response.status === 201){
+        setIsWrong(false)
+        router.push('/dashboard');
+      } else {
+        setIsWrong(true)
+        console.log(response.data.message)
+      }
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const renderForm = (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
+        <TextField name="email" label="Email address" onChange={(e) => setEmail(e.target.value)} value={email}/>
 
         <TextField
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
+          onChange={(e) => setPassword(e.target.value)} value={password}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -54,7 +72,12 @@ export default function LoginView() {
         />
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 3 }}>
+      {isWrong && 
+        <Link variant="subtitle2" underline="hover" color="red">
+          Wrong Credentials
+        </Link>}
+
         <Link variant="subtitle2" underline="hover">
           Forgot password?
         </Link>
